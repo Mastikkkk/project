@@ -1,0 +1,26 @@
+from flask import Flask, request
+
+app = Flask(__name__)
+
+@app.route("/users", methods=["GET", "POST"])
+def handle_users():
+# код для работы с пользователями, включая добавление, удаление и изменение данных пользователей
+if request.method == "GET":
+# код для получения информации о пользователях
+return users_info
+elif request.method == "POST":
+# код для добавления нового пользователя
+return "User added successfully"
+
+@app.route("/schedule", methods=["GET", "POST"])
+def handle_schedule():
+# код для работы с расписанием, включая получение и обновление информации о расписании
+if request.method == "GET":
+# код для получения информации о расписании
+return schedule_info
+elif request.method == "POST":
+# код для обновления информации о расписании
+return "Schedule updated successfully"
+
+if __name__ == "__main__":
+app.run()
