@@ -1,0 +1,62 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+
+class Schedule {
+public:
+// Добавить событие в расписание
+void addEvent(const std::string& date, const std::string& event) {
+schedule[date].push_back(event);
+}
+
+// Получить все события на указанную дату
+std::vector<std::string> getEvents(const std::string& date) {
+return schedule[date];
+}
+
+// Удалить событие на указанную дату
+void removeEvent(const std::string& date, const std::string& event) {
+auto it = schedule.find(date);
+if (it != schedule.end()) {
+std::vector<std::string>& events = it->second;
+for (auto eventIt = events.begin(); eventIt != events.end(); ++eventIt) {
+if (*eventIt == event) {
+events.erase(eventIt);
+break;
+}
+}
+}
+}
+
+// Очистить расписание на указанную дату
+void clearSchedule(const std::string& date) {
+schedule[date].clear();
+}
+
+private:
+std::unordered_map<std::string, std::vector<std::string» schedule;
+};
+
+int main() {
+Schedule schedule;
+
+// Добавить события в расписание
+schedule.addEvent("2022-01-01", "Празднование Нового года");
+schedule.addEvent("2022-01-01", "Встреча с друзьями");
+schedule.addEvent("2022-01-02", "Поход в музей");
+
+// Получить события на указанную дату и вывести их
+std::vector<std::string> events = schedule.getEvents("2022-01-01");
+std::cout « "События на 2022-01-01:" « std::endl;
+for (const std::string& event : events) {
+std::cout « "- " « event « std::endl;
+}
+
+// Удалить событие
+schedule.removeEvent("2022-01-01", "Встреча с друзьями");
+
+// Очистить расписание на указанную дату
+schedule.clearSchedule("2022-01-02");
+
+return 0;
+}
