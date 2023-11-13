@@ -1,0 +1,15 @@
+class AuthModule:
+def login(self, username, password):
+# код для проверки правильности введенного логина и пароля
+# возвращает токен доступа пользователя или None, если авторизация не прошла
+return access_token
+
+def validate_token(self, access_token):
+# код для проверки валидности токена доступа
+# возвращает True, если токен действителен, или False в противном случае
+return True if access_token is not None else False
+
+def check_permission(self, access_token, action):
+# код для проверки разрешения на выполнение действия
+# возвращает True, если разрешение есть, или False в противном случае
+return True if access_token is not None and action in permissions else False
