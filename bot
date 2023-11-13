@@ -1,0 +1,46 @@
+package main
+
+import (
+"log"
+"github.com/go-telegram-bot-api/telegram-bot-api"
+)
+
+func main() {
+bot, err := tgbotapi.NewBotAPI("6959941932:AAHylnM1nSrz8NxXJ1oBXc9n95XW0RPqDMk")
+if err != nil {
+log.Fatal(err)
+}
+
+u := tgbotapi.NewUpdate(0)
+u.Timeout = 60
+
+updates, err := bot.GetUpdatesChan(u)
+if err != nil {
+log.Fatal(err)
+}
+
+for update := range updates {
+if update.Message == nil {
+continue
+}
+
+msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+
+// Получение текста сообщения
+text := update.Message.Text
+
+switch text {
+case "/start":
+msg.Text = "Привет! Я бот. Чем могу помочь?"
+case "/help":
+msg.Text = "Вот список доступных команд:\n/start - Начать\n/help - Помощь"
+default:
+msg.Text = "Я не понимаю команды, попробуйте ввести /help для получения помощи."
+}
+
+_, err = bot.Send(msg)
+if err != nil {
+log.Println(err)
+}
+}
+}
