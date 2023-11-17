@@ -1,62 +1,46 @@
 #include <iostream>
-#include <unordered_map>
+#include <fstream>
+#include <string>
 #include <vector>
 
-class Schedule {
-public:
-// Добавить событие в расписание
-void addEvent(const std::string& date, const std::string& event) {
-schedule[date].push_back(event);
-}
-
-// Получить все события на указанную дату
-std::vector<std::string> getEvents(const std::string& date) {
-return schedule[date];
-}
-
-// Удалить событие на указанную дату
-void removeEvent(const std::string& date, const std::string& event) {
-auto it = schedule.find(date);
-if (it != schedule.end()) {
-std::vector<std::string>& events = it->second;
-for (auto eventIt = events.begin(); eventIt != events.end(); ++eventIt) {
-if (*eventIt == event) {
-events.erase(eventIt);
-break;
-}
-}
-}
-}
-
-// Очистить расписание на указанную дату
-void clearSchedule(const std::string& date) {
-schedule[date].clear();
-}
-
-private:
-std::unordered_map<std::string, std::vector<std::string» schedule;
+struct Lesson {
+std::string subject;
+std::string teacher;
+std::string time;
 };
 
-int main() {
-Schedule schedule;
+std::vector<Lesson> loadScheduleFromFile(const std::string& filename) {
+std::vector<Lesson> schedule;
+std::ifstream file(filename);
+std::string line;
 
-// Добавить события в расписание
-schedule.addEvent("2022-01-01", "Празднование Нового года");
-schedule.addEvent("2022-01-01", "Встреча с друзьями");
-schedule.addEvent("2022-01-02", "Поход в музей");
+while (std::getline(file, line)) {
+Lesson lesson;
+lesson.subject = line;
+std::getline(file, line);
+lesson.teacher = line;
+std::getline(file, line);
+lesson.time = line;
 
-// Получить события на указанную дату и вывести их
-std::vector<std::string> events = schedule.getEvents("2022-01-01");
-std::cout « "События на 2022-01-01:" « std::endl;
-for (const std::string& event : events) {
-std::cout « "- " « event « std::endl;
+schedule.push_back(lesson);
 }
 
-// Удалить событие
-schedule.removeEvent("2022-01-01", "Встреча с друзьями");
+return schedule;
+}
 
-// Очистить расписание на указанную дату
-schedule.clearSchedule("2022-01-02");
+void printSchedule(const std::vector<Lesson>& schedule) {
+for (const auto& lesson : schedule) {
+std::cout « "Subject: " « lesson.subject « std::endl;
+std::cout « "Teacher: " « lesson.teacher « std::endl;
+std::cout « "Time: " « lesson.time « std::endl;
+std::cout « std::endl;
+}
+}
+
+int main() {
+std::string scheduleFile = "schedule.txt";
+std::vector<Lesson> schedule = loadScheduleFromFile(scheduleFile);
+printSchedule(schedule);
 
 return 0;
 }
